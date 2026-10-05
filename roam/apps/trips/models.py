@@ -36,6 +36,18 @@ class Trip(models.Model):
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now_add=True)
 
+    @property
+    def full_stars(self):
+        return range(self.rating // 2)
+
+    @property
+    def half_star(self):
+        return self.rating % 2 == 1
+
+    @property
+    def empty_stars(self):
+        return range(5 - self.rating // 2 - int(self.half_star))
+
 
 class TripForm(forms.ModelForm):
     class Meta:
