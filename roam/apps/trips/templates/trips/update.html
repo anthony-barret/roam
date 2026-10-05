@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>ROAM</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+	      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+	        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+	        crossorigin="anonymous"></script>
+</head>
+<body>
+<h1 class="text-center mb-3">ROAM</h1>
+<h2 class="text-center mb-3">Edit this trip</h2>
+<div class="container">
+	<form method="post">
+		{% csrf_token %}
+		<div class="mb-3">
+			<label for="{{ form.name.id_for_label }}" class="form-label">Trip name</label>
+			{{ form.name }}
+			{% if form.name.errors %}
+			<div class="invalid-feedback d-block">
+				{{ form.name.errors }}
+			</div>
+			{% endif %}
+		</div>
+		<div class="mb-3">
+			<label for="{{ form.destination.id_for_label }}" class="form-label">Destination</label>
+			{{ form.destination }}
+			{% if form.destination.errors %}
+			<div class="invalid-feedback d-block">
+				{{ form.destination.errors }}
+			</div>
+			{% endif %}
+		</div>
+		<div class="row">
+			<div class="col-md-6 mb-3">
+				<label for="{{ form.start_date.id_for_label }}" class="form-label">Start date</label>
+				{{ form.start_date }}
+				{% if form.start_date.errors %}
+				<div class="invalid-feedback d-block">
+					{{ form.start_date.errors }}
+				</div>
+				{% endif %}
+			</div>
+			<div class="col-md-6 mb-3">
+				<label for="{{ form.end_date.id_for_label }}" class="form-label">End date</label>
+				{{ form.end_date }}
+				{% if form.end_date.errors %}
+				<div class="invalid-feedback d-block">
+					{{ form.end_date.errors }}
+				</div>
+				{% endif %}
+			</div>
+			<div class="mb-4">
+				<label for="{{ form.status.id_for_label }}" class="form-label">Status</label>
+				{{ form.status }}
+				{% if form.status.errors %}
+				<div class="invalid-feedback d-block">
+					{{ form.status.errors }}
+				</div>
+				{% endif %}
+			</div>
+			<div class="mb-3">
+				<label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
+				{{ form.description }}
+				{% if form.description.errors %}
+				<div class="invalid-feedback d-block">
+					{{ form.description.errors }}
+				</div>
+				{% endif %}
+			</div>
+			<div class="mb-3">
+				<label for="{{ form.rating.id_for_label }}" class="form-label">Rating over 10</label>
+				{{ form.rating }}
+				{% if form.rating.errors %}
+				<div class="invalid-feedback d-block">
+					{{ form.rating.errors }}
+				</div>
+				{% endif %}
+			</div>
+			<div class="text-center">
+				<input class="btn btn-primary" type="submit" value="Save">
+			</div>
+	</form>
+	<div class="d-flex justify-content-center mt-4">
+		<a href="{% url 'trips:index' %}" class="btn btn-danger">Cancel</a>
+	</div>
+</div>
+</body>
+</html>

@@ -32,3 +32,16 @@ class TripDetailView(generic.DetailView):
     context_object_name = 'trip'
 
 
+class TripUpdateView(generic.UpdateView):
+    model = Trip
+    form_class = TripForm
+    template_name = 'trips/update.html'
+    context_object_name = 'trip'
+
+    def get_success_url(self):
+        return reverse_lazy(
+            'trips:detail',
+            kwargs={'pk': self.object.pk},
+        )
+
+
