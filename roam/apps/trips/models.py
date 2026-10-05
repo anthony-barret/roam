@@ -1,5 +1,6 @@
 from datetime import date
 
+from django import forms
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
@@ -36,3 +37,26 @@ class Trip(models.Model):
     updated_at = models.DateField(auto_now_add=True)
 
 
+class TripForm(forms.ModelForm):
+    class Meta:
+        model = Trip
+        fields = [
+            'name',
+            'destination',
+            'start_date',
+            'end_date',
+            'description',
+            'status',
+            'rating',
+        ]
+        widgets = {
+            'start_date': forms.DateInput(
+                attrs={'type': 'date'},
+            ),
+            'end_date': forms.DateInput(
+                attrs={'type': 'date'},
+            ),
+            'description': forms.Textarea(
+                attrs={'rows': 5},
+            ),
+        }
