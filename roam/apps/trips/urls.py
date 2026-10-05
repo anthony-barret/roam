@@ -7,4 +7,5 @@ app_name = 'trips'
 urlpatterns = [
     path('', views.TripIndexView.as_view(), name='index'),
     path('create/', views.TripCreateView.as_view(), name='create'),
+    path('<int:pk>/', views.TripDetailView.as_view(), name='detail'),
 ]

@@ -26,3 +26,9 @@ class TripCreateView(generic.CreateView):
         )
 
 
+class TripDetailView(generic.DetailView):
+    model = Trip
+    template_name = 'trips/detail.html'
+    context_object_name = 'trip'
+
+
