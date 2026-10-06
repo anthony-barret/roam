@@ -62,13 +62,44 @@ class TripForm(forms.ModelForm):
             'rating',
         ]
         widgets = {
+            'name': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                }
+            ),
+            'destination': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                }
+            ),
             'start_date': forms.DateInput(
-                attrs={'type': 'date'},
+                attrs={
+                    'class': 'form-control',
+                    'type': 'date',
+                }
             ),
             'end_date': forms.DateInput(
-                attrs={'type': 'date'},
+                attrs={
+                    'class': 'form-control',
+                    'type': 'date',
+                }
+            ),
+            'rating': forms.NumberInput(
+                attrs={
+                    'class': 'form-control',
+                    'min': 0,
+                    'max': 10,
+                }
             ),
             'description': forms.Textarea(
-                attrs={'rows': 5},
+                attrs={
+                    'class': 'form-control',
+                    'rows': 5,
+                }
+            ),
+            'status': forms.Select(
+                attrs={
+                    'class': 'form-select',
+                }
             ),
         }
