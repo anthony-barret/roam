@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 
@@ -45,3 +44,8 @@ class TripUpdateView(generic.UpdateView):
         )
 
 
+class TripDeleteView(generic.DeleteView):
+    model = Trip
+    template_name = 'trips/delete.html'
+    context_object_name = 'trip'
+    success_url = reverse_lazy('trips:index')
