@@ -144,3 +144,10 @@ class TripUpdateViewTests(TestCase):
         response = self.client.get(reverse('trips:update', kwargs={'pk': self.trip.pk}))
         self.assertEqual(response.status_code, 200)
 
+    def test_trip_update_returns_404_for_unknown_trip(self):
+        """
+        Update view returns 404 when the trip does not exist.
+        """
+        response = self.client.get(reverse('trips:update', kwargs={'pk': 9999}))
+        self.assertEqual(response.status_code, 404)
+
