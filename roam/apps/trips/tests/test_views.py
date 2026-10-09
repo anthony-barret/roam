@@ -249,10 +249,26 @@ class TripUpdateViewTests(TestCase):
             'end_date': '2026-10-15',
             'rating': -9999,
             'status': 'invalid',
-        },
-                                    )
+        })
         self.assertEqual(response.status_code, 200)
         self.assertFalse(response.context['form'].is_valid())
         self.trip.refresh_from_db()
         self.assertEqual(self.trip.name, original_name)
         self.assertEqual(Trip.objects.count(), 1)
+
+
+class TripDeleteViewTests(TestCase):
+    def setUp(self):
+        self.trip = Trip.objects.create(
+            name='Trip to TripDeleteViewTests',
+            destination='Testland',
+            description='A test trip description',
+            rating=10,
+        )
+
+    def test_delete_trip_returns_200(self):
+        """
+        Delete view returns 200.
+        """
+        response = self.client.get(reverse('trips:delete', kwargs={'pk': self.trip.pk}))
+        self.assertEqual(response.status_code, 200)
