@@ -279,3 +279,10 @@ class TripDeleteViewTests(TestCase):
         """
         response = self.client.get(reverse('trips:delete', kwargs={'pk': 9999}))
         self.assertEqual(response.status_code, 404)
+
+    def test_delete_trip_uses_correct_template(self):
+        """
+        Delete view uses the correct template.
+        """
+        response = self.client.get(reverse('trips:delete', kwargs={'pk': self.trip.pk}))
+        self.assertTemplateUsed(response, 'trips/delete.html')
