@@ -307,3 +307,10 @@ class TripDeleteViewTests(TestCase):
         """
         response = self.client.post(reverse('trips:delete', kwargs={'pk': self.trip.pk}))
         self.assertFalse(Trip.objects.filter(pk=self.trip.pk).exists())
+
+    def test_post_delete_trip_redirects_to_index(self):
+        """
+        Delete view redirects to the index page after deletion.
+        """
+        response = self.client.post(reverse('trips:delete', kwargs={'pk': self.trip.pk}))
+        self.assertRedirects(response, reverse('trips:index'))
