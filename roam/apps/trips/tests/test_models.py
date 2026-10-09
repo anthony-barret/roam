@@ -56,6 +56,9 @@ class TripModelTests(TestCase):
             trip.full_clean()
 
     def test_trip_name_is_required(self):
+        """
+        Trip name must be provided.
+        """
         trip = Trip(
             destination='Testland',
             description='Trip to Testland',
@@ -65,9 +68,24 @@ class TripModelTests(TestCase):
             trip.full_clean()
 
     def test_trip_destination_is_required(self):
+        """
+        Trip destination must be provided.
+        """
         trip = Trip(
             name='Trip to test_trip_destination_is_required',
             description='Trip to Testland',
+            rating=5,
+        )
+        with self.assertRaises(ValidationError):
+            trip.full_clean()
+
+    def test_trip_description_is_required(self):
+        """
+        Trip description must be provided.
+        """
+        trip = Trip(
+            name='Trip to test_trip_description_is_required',
+            destination='Testland',
             rating=5,
         )
         with self.assertRaises(ValidationError):
