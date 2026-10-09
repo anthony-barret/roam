@@ -63,3 +63,12 @@ class TripModelTests(TestCase):
         )
         with self.assertRaises(ValidationError):
             trip.full_clean()
+
+    def test_trip_destination_is_required(self):
+        trip = Trip(
+            name='Trip to test_trip_destination_is_required',
+            description='Trip to Testland',
+            rating=5,
+        )
+        with self.assertRaises(ValidationError):
+            trip.full_clean()
