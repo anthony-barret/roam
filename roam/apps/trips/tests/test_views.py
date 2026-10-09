@@ -85,7 +85,15 @@ class TripDetailViewTests(TestCase):
 
     def test_trip_detail_returns_200(self):
         """
-        Test that the trip detail view returns 200 when the trip exists.
+        Detail view returns 200 when the trip exists.
         """
         response = self.client.get(reverse('trips:detail', kwargs={'pk': self.trip.pk}))
         self.assertEqual(response.status_code, 200)
+
+    def test_trip_detail_returns_404(self):
+        """
+        Detail view returns 404 when the trip does not exist.
+        """
+        response = self.client.get(reverse('trips:detail', kwargs={'pk': 9999}))
+        self.assertEqual(response.status_code, 404)
+
