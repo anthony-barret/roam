@@ -1,6 +1,7 @@
 from datetime import date
 
 from django import forms
+from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
@@ -35,6 +36,13 @@ class Trip(models.Model):
     )
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now_add=True)
+
+    def clean(self):
+        super().clean()
+        if self.start_date and self.end_date and self.start_date > self.end_date:
+            raise ValidationError({
+                'end_date': 'The end date cannot be before the start date.'
+            })
 
     @property
     def full_stars(self):
