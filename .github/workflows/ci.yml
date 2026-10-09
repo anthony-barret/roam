@@ -57,5 +57,11 @@ jobs:
       - name: Run tests with coverage
         working-directory: roam
         run: |
-          coverage run manage.py test
-          coverage report
+          coverage run --source='apps' manage.py test apps
+          coverage report xml
+      - name: Upload to Codecov
+        if: success()
+        uses: codecov/codecov-action@v5
+        with:
+          files: ./coverage.xml
+          fail_ci_if_error: true
