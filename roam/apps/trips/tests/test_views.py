@@ -181,3 +181,27 @@ class TripUpdateViewTests(TestCase):
         self.assertEqual(response.context['form']['description'].value(), self.trip.description)
         self.assertEqual(response.context['form']['status'].value(), self.trip.status)
         self.assertEqual(response.context['form']['rating'].value(), self.trip.rating)
+
+    def test_trip_update_with_valid_data(self):
+        """
+        Update view with valid data.
+        """
+        response = self.client.post(reverse('trips:update', kwargs={'pk': self.trip.pk}), data={
+            'name': 'Updated trip',
+            'destination': 'Testlandia',
+            'description': 'Updated description',
+            'start_date': '2026-10-09',
+            'end_date': '2026-10-09',
+            'rating': 0,
+            'status': 'cancelled',
+        })
+        self.assertEqual(response.status_code, 302)
+        self.trip.refresh_from_db()
+        self.assertEqual(self.trip.name, 'Updated trip')
+        self.assertEqual(self.trip.destination, 'Testlandia')
+        self.assertEqual(self.trip.description, 'Updated description')
+        self.assertEqual(self.trip.start_date, datetime.date(2026, 10, 9))
+        self.assertEqual(self.trip.end_date, datetime.date(2026, 10, 9))
+        self.assertEqual(self.trip.rating, 0)
+        self.assertEqual(self.trip.status, 'cancelled')
+        self.assertEqual(Trip.objects.count(), 1)
