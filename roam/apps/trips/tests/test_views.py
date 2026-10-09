@@ -133,7 +133,10 @@ class TripUpdateViewTests(TestCase):
         self.trip = Trip.objects.create(
             name='Trip to TripUpdateViewTests',
             destination='Testland',
+            start_date=datetime.date.today(),
+            end_date=datetime.date.today(),
             description='A test trip description',
+            status='completed',
             rating=10,
         )
 
@@ -164,3 +167,17 @@ class TripUpdateViewTests(TestCase):
         """
         response = self.client.get(reverse('trips:update', kwargs={'pk': self.trip.pk}))
         self.assertEqual(response.context['trip'], self.trip)
+
+    def test_trip_update_form_is_prefilled(self):
+        """
+        Update form is prefilled.
+        """
+        response = self.client.get(reverse('trips:update', kwargs={'pk': self.trip.pk}))
+        self.assertEqual(response.context['form'].instance, self.trip)
+        self.assertEqual(response.context['form']['name'].value(), self.trip.name)
+        self.assertEqual(response.context['form']['destination'].value(), self.trip.destination)
+        self.assertEqual(response.context['form']['start_date'].value(), self.trip.start_date)
+        self.assertEqual(response.context['form']['end_date'].value(), self.trip.end_date)
+        self.assertEqual(response.context['form']['description'].value(), self.trip.description)
+        self.assertEqual(response.context['form']['status'].value(), self.trip.status)
+        self.assertEqual(response.context['form']['rating'].value(), self.trip.rating)
