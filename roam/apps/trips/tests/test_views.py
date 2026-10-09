@@ -36,6 +36,28 @@ class TripIndexViewTests(TestCase):
         response = self.client.get(reverse('trips:index'))
         self.assertTemplateUsed(response, 'trips/index.html')
 
+    def test_index_passes_trips_in_context(self):
+        """
+        Index view uses the correct context for template.
+        """
+        trip1 = Trip.objects.create(
+            name='Trip 1 to TripIndexViewTests',
+            destination='Testland',
+            description='A test trip description',
+            rating=10,
+        )
+        trip2 = Trip.objects.create(
+            name='Trip 2 to TripIndexViewTests',
+            destination='Testland',
+            description='A test trip description',
+            rating=10,
+        )
+        self.assertEqual(Trip.objects.count(), 2)
+        response = self.client.get(reverse('trips:index'))
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('trips', response.context)
+        self.assertIn(trip1, response.context['trips'])
+        self.assertIn(trip2, response.context['trips'])
 
 
 class TripCreateViewTests(TestCase):
