@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from apps.trips.models import Trip
@@ -27,3 +28,17 @@ class TripModelTests(TestCase):
             rating=10,
         )
         trip.full_clean()
+
+    def test_rating_negative_number_is_invalid(self):
+        """
+        Rating cannot be negative.
+        """
+        trip = Trip(
+            name='Trip to test_rating_ten_is_valid',
+            destination='Testland',
+            description='Trip to Testland',
+            rating=-1,
+        )
+
+        with self.assertRaises(ValidationError):
+            trip.full_clean()
