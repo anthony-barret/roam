@@ -15,3 +15,15 @@ class TripModelTests(TestCase):
             rating=0,
         )
         trip.full_clean()
+
+    def test_rating_ten_is_valid(self):
+        """
+        Rating can be ten.
+        """
+        trip = Trip(
+            name='Trip to test_rating_ten_is_valid',
+            destination='Testland',
+            description='Trip to Testland',
+            rating=10,
+        )
+        trip.full_clean()
