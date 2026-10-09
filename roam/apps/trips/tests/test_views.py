@@ -73,6 +73,13 @@ class TripCreateViewTests(TestCase):
         self.assertIn('status', response.context['form'].errors)
         self.assertEqual(Trip.objects.count(), 0)
 
+    def test_create_trip_uses_correct_template(self):
+        """
+        Create view uses the correct template.
+        """
+        response = self.client.post(reverse('trips:create'), data={})
+        self.assertTemplateUsed(response, 'trips/create.html')
+
 
 class TripDetailViewTests(TestCase):
     def setUp(self):
