@@ -39,6 +39,18 @@ class TripModelTests(TestCase):
             description='Trip to Testland',
             rating=-1,
         )
+        with self.assertRaises(ValidationError):
+            trip.full_clean()
 
+    def test_rating_above_ten_is_invalid(self):
+        """
+        Rating cannot be greater than ten.
+        """
+        trip = Trip(
+            name='Trip to test_rating_ten_is_valid',
+            destination='Testland',
+            description='Trip to Testland',
+            rating=11,
+        )
         with self.assertRaises(ValidationError):
             trip.full_clean()
