@@ -300,3 +300,10 @@ class TripDeleteViewTests(TestCase):
         """
         self.client.get(reverse('trips:delete', kwargs={'pk': self.trip.pk}))
         self.assertTrue(Trip.objects.filter(pk=self.trip.pk).exists())
+
+    def test_post_delete_trip_deletes_trip(self):
+        """
+        Delete view actually deletes the trip.
+        """
+        response = self.client.post(reverse('trips:delete', kwargs={'pk': self.trip.pk}))
+        self.assertFalse(Trip.objects.filter(pk=self.trip.pk).exists())
