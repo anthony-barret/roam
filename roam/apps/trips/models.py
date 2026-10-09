@@ -34,8 +34,8 @@ class Trip(models.Model):
             MaxValueValidator(10),
         ],
     )
-    created_at = models.DateField(auto_now_add=True)
-    updated_at = models.DateField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def clean(self):
         super().clean()
