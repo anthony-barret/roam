@@ -112,3 +112,10 @@ class TripDetailViewTests(TestCase):
         """
         response = self.client.get(reverse('trips:detail', kwargs={'pk': self.trip.pk}))
         self.assertTemplateUsed(response, 'trips/detail.html')
+
+    def test_trip_detail_passes_trip_in_context(self):
+        """
+        Detail view uses the correct context for template.
+        """
+        response = self.client.get(reverse('trips:detail', kwargs={'pk': self.trip.pk}))
+        self.assertEqual(response.context['trip'], self.trip)
