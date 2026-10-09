@@ -106,3 +106,9 @@ class TripDetailViewTests(TestCase):
         self.assertContains(response, self.trip.destination)
         self.assertContains(response, self.trip.description)
 
+    def test_trip_detail_uses_correct_template(self):
+        """
+        Detail view uses the correct template.
+        """
+        response = self.client.get(reverse('trips:detail', kwargs={'pk': self.trip.pk}))
+        self.assertTemplateUsed(response, 'trips/detail.html')
