@@ -158,3 +158,9 @@ class TripUpdateViewTests(TestCase):
         response = self.client.get(reverse('trips:update', kwargs={'pk': self.trip.pk}))
         self.assertTemplateUsed(response, 'trips/update.html')
 
+    def test_trip_update_passes_trip_in_context(self):
+        """
+        Update view uses the correct context for template.
+        """
+        response = self.client.get(reverse('trips:update', kwargs={'pk': self.trip.pk}))
+        self.assertEqual(response.context['trip'], self.trip)
