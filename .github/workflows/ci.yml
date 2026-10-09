@@ -58,7 +58,8 @@ jobs:
         working-directory: roam
         run: |
           coverage run --source='apps' manage.py test apps
-          coverage report xml
+          coverage report
+          coverage xml
       - name: Upload to Codecov
         if: success()
         uses: codecov/codecov-action@v5
