@@ -1,6 +1,7 @@
 # ROAM
 
 [![CI](https://github.com/anthony-barret/roam/actions/workflows/ci.yml/badge.svg)](https://github.com/anthony-barret/roam/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/anthony-barret/roam/branch/dev/graph/badge.svg)](https://codecov.io/gh/anthony-barret/roam)
 
 Roam is a personal travel journal and travel management web application.
 
