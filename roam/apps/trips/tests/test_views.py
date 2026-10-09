@@ -33,7 +33,7 @@ class TripIndexViewTests(TestCase):
 class TripCreateViewTests(TestCase):
     def test_create_trip_valid_parameters(self):
         """
-        Create a trip with valid parameters
+        Create a trip with valid parameters.
         """
         response = self.client.post(reverse('trips:create'), data={
             'name': 'Trip to test_create_trip_valid_parameters',
@@ -53,3 +53,22 @@ class TripCreateViewTests(TestCase):
         self.assertEqual(trip.description, 'Trip to Testland')
         self.assertEqual(trip.rating, 10)
         self.assertEqual(trip.status, 'completed')
+
+    def test_create_trip_invalid_parameters(self):
+        """
+        Create a trip with invalid parameters.
+        """
+        response = self.client.post(reverse('trips:create'), data={
+            'name': 'Trip to test_create_trip_invalid_parameters',
+            'start_date': datetime.date(2026, 10, 11),
+            'end_date': datetime.date(2026, 10, 9),
+            'description': 'Trip to Testland',
+            'rating': -10,
+            'status': 'invalid',
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.context['form'].is_valid())
+        self.assertIn('end_date', response.context['form'].errors)
+        self.assertIn('rating', response.context['form'].errors)
+        self.assertIn('status', response.context['form'].errors)
+        self.assertEqual(Trip.objects.count(), 0)
