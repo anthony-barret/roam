@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
@@ -86,6 +88,18 @@ class TripModelTests(TestCase):
         trip = Trip(
             name='Trip to test_trip_description_is_required',
             destination='Testland',
+            rating=5,
+        )
+        with self.assertRaises(ValidationError):
+            trip.full_clean()
+
+    def test_trip_start_date_must_be_before_end_date(self):
+        trip = Trip(
+            name='Trip to test_trip_start_date_must_be_before_end_date',
+            destination='Testland',
+            description='Trip to Testland',
+            start_date=date(2026, 10, 11),
+            end_date=date(2026, 10, 9),
             rating=5,
         )
         with self.assertRaises(ValidationError):
