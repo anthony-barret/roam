@@ -151,3 +151,10 @@ class TripUpdateViewTests(TestCase):
         response = self.client.get(reverse('trips:update', kwargs={'pk': 9999}))
         self.assertEqual(response.status_code, 404)
 
+    def test_trip_update_uses_correct_template(self):
+        """
+        Update view uses the correct template.
+        """
+        response = self.client.get(reverse('trips:update', kwargs={'pk': self.trip.pk}))
+        self.assertTemplateUsed(response, 'trips/update.html')
+
