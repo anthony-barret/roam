@@ -29,6 +29,14 @@ class TripIndexViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, 'Please add a trip !')
 
+    def test_index_uses_correct_template(self):
+        """
+        Index view uses the correct template.
+        """
+        response = self.client.get(reverse('trips:index'))
+        self.assertTemplateUsed(response, 'trips/index.html')
+
+
 
 class TripCreateViewTests(TestCase):
     def test_create_trip_valid_parameters(self):
