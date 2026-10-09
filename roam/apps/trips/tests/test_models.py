@@ -34,7 +34,7 @@ class TripModelTests(TestCase):
         Rating cannot be negative.
         """
         trip = Trip(
-            name='Trip to test_rating_ten_is_valid',
+            name='Trip to test_rating_negative_number_is_invalid',
             destination='Testland',
             description='Trip to Testland',
             rating=-1,
@@ -47,10 +47,19 @@ class TripModelTests(TestCase):
         Rating cannot be greater than ten.
         """
         trip = Trip(
-            name='Trip to test_rating_ten_is_valid',
+            name='Trip to test_rating_above_ten_is_invalid',
             destination='Testland',
             description='Trip to Testland',
             rating=11,
+        )
+        with self.assertRaises(ValidationError):
+            trip.full_clean()
+
+    def test_trip_name_is_required(self):
+        trip = Trip(
+            destination='Testland',
+            description='Trip to Testland',
+            rating=5,
         )
         with self.assertRaises(ValidationError):
             trip.full_clean()
