@@ -94,6 +94,9 @@ class TripModelTests(TestCase):
             trip.full_clean()
 
     def test_trip_start_date_must_be_before_end_date(self):
+        """
+        Trip start date must be before end date.
+        """
         trip = Trip(
             name='Trip to test_trip_start_date_must_be_before_end_date',
             destination='Testland',
@@ -104,3 +107,21 @@ class TripModelTests(TestCase):
         )
         with self.assertRaises(ValidationError):
             trip.full_clean()
+
+    def test_updated_at_changes_when_trip_is_updated(self):
+        """
+        Verify that updated_at changes when a trip is updated.
+        """
+        trip = Trip(
+            name='Trip to test_updated_at_changes_when_trip_is_updated',
+            destination='Testland',
+            description='Trip to Testland',
+            rating=5,
+        )
+        trip.save()
+        trip.refresh_from_db()
+        previous_updated_at = trip.updated_at
+        trip.destination = 'Testlandia'
+        trip.save()
+        trip.refresh_from_db()
+        self.assertGreater(trip.updated_at, previous_updated_at)
