@@ -268,7 +268,14 @@ class TripDeleteViewTests(TestCase):
 
     def test_delete_trip_returns_200(self):
         """
-        Delete view returns 200.
+        Delete view returns 200 when the trip exists.
         """
         response = self.client.get(reverse('trips:delete', kwargs={'pk': self.trip.pk}))
         self.assertEqual(response.status_code, 200)
+
+    def test_delete_nonexistent_trip_returns_404(self):
+        """
+        Delete view returns 404 when the trip exists.
+        """
+        response = self.client.get(reverse('trips:delete', kwargs={'pk': 9999}))
+        self.assertEqual(response.status_code, 404)
