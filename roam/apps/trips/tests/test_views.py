@@ -286,3 +286,10 @@ class TripDeleteViewTests(TestCase):
         """
         response = self.client.get(reverse('trips:delete', kwargs={'pk': self.trip.pk}))
         self.assertTemplateUsed(response, 'trips/delete.html')
+
+    def test_delete_trip_passes_trip_in_context(self):
+        """
+        Delete view uses the correct context for template.
+        """
+        response = self.client.get(reverse('trips:delete', kwargs={'pk': self.trip.pk}))
+        self.assertEqual(response.context['trip'], self.trip)
