@@ -72,3 +72,20 @@ class TripCreateViewTests(TestCase):
         self.assertIn('rating', response.context['form'].errors)
         self.assertIn('status', response.context['form'].errors)
         self.assertEqual(Trip.objects.count(), 0)
+
+
+class TripDetailViewTests(TestCase):
+    def setUp(self):
+        self.trip = Trip.objects.create(
+            name='Trip to TripDetailViewTests',
+            destination='Testland',
+            description='A test trip description',
+            rating=10,
+        )
+
+    def test_trip_detail_returns_200(self):
+        """
+        Test that the trip detail view returns 200 when the trip exists.
+        """
+        response = self.client.get(reverse('trips:detail', kwargs={'pk': self.trip.pk}))
+        self.assertEqual(response.status_code, 200)
