@@ -3,10 +3,16 @@ import datetime
 from django.test import TestCase
 from django.urls import reverse
 
-from apps.trips.models import Trip
+from apps.trips.models import Trip, Country
 
 
 class TripIndexViewTests(TestCase):
+    def setUp(self):
+        self.country = Country.objects.create(
+            name='Testland',
+            code='TL',
+        )
+
     def test_no_trip(self):
         """
         If no trips exist, the message 'Please add a trip !' is displayed.
@@ -21,7 +27,9 @@ class TripIndexViewTests(TestCase):
         """
         trip = Trip.objects.create(
             name='Trip to Testland',
-            destination='Testland',
+            city='Test',
+            country=self.country,
+            description='Trip to the city of tests',
             rating=10,
             status='completed',
         )
@@ -42,14 +50,16 @@ class TripIndexViewTests(TestCase):
         """
         trip1 = Trip.objects.create(
             name='Trip 1 to TripIndexViewTests',
-            destination='Testland',
-            description='A test trip description',
+            city='Test',
+            country=self.country,
+            description='Trip to the city of tests',
             rating=10,
         )
         trip2 = Trip.objects.create(
             name='Trip 2 to TripIndexViewTests',
-            destination='Testland',
-            description='A test trip description',
+            city='Test',
+            country=self.country,
+            description='Trip to the city of tests',
             rating=10,
         )
         self.assertEqual(Trip.objects.count(), 2)
@@ -61,26 +71,34 @@ class TripIndexViewTests(TestCase):
 
 
 class TripCreateViewTests(TestCase):
+    def setUp(self):
+        self.country = Country.objects.create(
+            name='Testland',
+            code='TL',
+        )
+
     def test_create_trip_valid_parameters(self):
         """
         Create a trip with valid parameters.
         """
         response = self.client.post(reverse('trips:create'), data={
             'name': 'Trip to test_create_trip_valid_parameters',
-            'destination': 'Testland',
+            'city': 'Test',
+            'country': self.country.pk,
             'start_date': datetime.date.today(),
             'end_date': datetime.date.today(),
-            'description': 'Trip to Testland',
+            'description': 'Trip to the city of tests',
             'rating': 10,
             'status': 'completed',
         })
         self.assertEqual(response.status_code, 302)
         self.assertEqual(Trip.objects.count(), 1)
         trip = Trip.objects.get(name='Trip to test_create_trip_valid_parameters')
-        self.assertEqual(trip.destination, 'Testland')
+        self.assertEqual(trip.city, 'Test')
+        self.assertEqual(trip.country, self.country)
         self.assertEqual(trip.start_date, datetime.date.today())
         self.assertEqual(trip.end_date, datetime.date.today())
-        self.assertEqual(trip.description, 'Trip to Testland')
+        self.assertEqual(trip.description, 'Trip to the city of tests')
         self.assertEqual(trip.rating, 10)
         self.assertEqual(trip.status, 'completed')
 
@@ -113,10 +131,15 @@ class TripCreateViewTests(TestCase):
 
 class TripDetailViewTests(TestCase):
     def setUp(self):
+        self.country = Country.objects.create(
+            name='Testland',
+            code='TL',
+        )
         self.trip = Trip.objects.create(
             name='Trip to TripDetailViewTests',
-            destination='Testland',
-            description='A test trip description',
+            city='Test',
+            country=self.country,
+            description='Trip to the city of tests',
             rating=10,
         )
 
@@ -140,7 +163,8 @@ class TripDetailViewTests(TestCase):
         """
         response = self.client.get(reverse('trips:detail', kwargs={'pk': self.trip.pk}))
         self.assertContains(response, self.trip.name)
-        self.assertContains(response, self.trip.destination)
+        self.assertContains(response, self.trip.city)
+        self.assertContains(response, self.trip.country)
         self.assertContains(response, self.trip.description)
 
     def test_trip_detail_uses_correct_template(self):
@@ -160,12 +184,17 @@ class TripDetailViewTests(TestCase):
 
 class TripUpdateViewTests(TestCase):
     def setUp(self):
+        self.country = Country.objects.create(
+            name='Testland',
+            code='TL',
+        )
         self.trip = Trip.objects.create(
             name='Trip to TripUpdateViewTests',
-            destination='Testland',
+            city='Test',
+            country=self.country,
+            description='Trip to the city of tests',
             start_date=datetime.date.today(),
             end_date=datetime.date.today(),
-            description='A test trip description',
             status='completed',
             rating=10,
         )
@@ -205,7 +234,8 @@ class TripUpdateViewTests(TestCase):
         response = self.client.get(reverse('trips:update', kwargs={'pk': self.trip.pk}))
         self.assertEqual(response.context['form'].instance, self.trip)
         self.assertEqual(response.context['form']['name'].value(), self.trip.name)
-        self.assertEqual(response.context['form']['destination'].value(), self.trip.destination)
+        self.assertEqual(response.context['form']['city'].value(), self.trip.city)
+        self.assertEqual(response.context['form']['country'].value(), self.trip.country.pk)
         self.assertEqual(response.context['form']['start_date'].value(), self.trip.start_date)
         self.assertEqual(response.context['form']['end_date'].value(), self.trip.end_date)
         self.assertEqual(response.context['form']['description'].value(), self.trip.description)
@@ -218,7 +248,8 @@ class TripUpdateViewTests(TestCase):
         """
         response = self.client.post(reverse('trips:update', kwargs={'pk': self.trip.pk}), data={
             'name': 'Updated trip',
-            'destination': 'Testlandia',
+            'city': 'Test',
+            'country': self.country.pk,
             'description': 'Updated description',
             'start_date': '2026-10-09',
             'end_date': '2026-10-09',
@@ -228,7 +259,8 @@ class TripUpdateViewTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.trip.refresh_from_db()
         self.assertEqual(self.trip.name, 'Updated trip')
-        self.assertEqual(self.trip.destination, 'Testlandia')
+        self.assertEqual(self.trip.city, 'Test')
+        self.assertEqual(self.trip.country, self.country)
         self.assertEqual(self.trip.description, 'Updated description')
         self.assertEqual(self.trip.start_date, datetime.date(2026, 10, 9))
         self.assertEqual(self.trip.end_date, datetime.date(2026, 10, 9))
@@ -243,7 +275,8 @@ class TripUpdateViewTests(TestCase):
         original_name = self.trip.name
         response = self.client.post(reverse('trips:update', kwargs={'pk': self.trip.pk}), data={
             'name': '',
-            'destination': 'Testlandia',
+            'city': 'Testlandia',
+            'country': self.country.pk + 1,
             'description': 'Updated description',
             'start_date': '2026-10-18',
             'end_date': '2026-10-15',
@@ -259,10 +292,15 @@ class TripUpdateViewTests(TestCase):
 
 class TripDeleteViewTests(TestCase):
     def setUp(self):
+        self.country = Country.objects.create(
+            name='Testland',
+            code='TL',
+        )
         self.trip = Trip.objects.create(
             name='Trip to TripDeleteViewTests',
-            destination='Testland',
-            description='A test trip description',
+            city='Test',
+            country=self.country,
+            description='Trip to the city of tests',
             rating=10,
         )
 

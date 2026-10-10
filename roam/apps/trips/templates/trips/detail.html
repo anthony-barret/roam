@@ -6,16 +6,20 @@
 </div>
 <div class="container mb-3">
 	<div class="card h-100">
+		<h5 class="card-header d-flex justify-content-between align-items-center">
+			<span>{{ trip.country.flag }}</span>
+			<span>{{ trip.status }}</span>
+		</h5>
 		<div class="card-body">
 			<h5 class="card-title text-center">{{ trip.name }}</h5>
 			<div class="row g-3 mt-1">
 				<div class="col-6">
-					<small class="text-body-secondary">Destination</small>
-					<div class="fw-semibold">{{ trip.destination }}</div>
+					<small class="text-body-secondary">Country</small>
+					<div class="fw-semibold">{{ trip.country }}</div>
 				</div>
 				<div class="col-6">
-					<small class="text-body-secondary">Status</small>
-					<div class="fw-semibold">{{ trip.status }}</div>
+					<small class="text-body-secondary">City</small>
+					<div class="fw-semibold">{{ trip.city }}</div>
 				</div>
 				<div class="col-6">
 					<small class="text-body-secondary">Start date</small>

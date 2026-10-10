@@ -14,12 +14,21 @@
 			</div>
 			{% endif %}
 		</div>
-		<div class="mb-3">
-			<label for="{{ form.destination.id_for_label }}" class="form-label">Destination</label>
-			{{ form.destination }}
-			{% if form.destination.errors %}
+		<div class="mb-3 form-field">
+			{{ form.country.label_tag }}
+			{{ form.country }}
+			{% if form.country.errors %}
 			<div class="invalid-feedback d-block">
-				{{ form.destination.errors }}
+				{{ form.country.errors }}
+			</div>
+			{% endif %}
+		</div>
+		<div class="mb-3 form-field">
+			{{ form.city.label_tag }}
+			{{ form.city }}
+			{% if form.city.errors %}
+			<div class="invalid-feedback d-block">
+				{{ form.city.errors }}
 			</div>
 			{% endif %}
 		</div>

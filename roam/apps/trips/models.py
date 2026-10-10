@@ -15,9 +15,29 @@ class TripStatus(models.TextChoices):
     CANCELLED = 'cancelled'
 
 
+class Country(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    code = models.CharField(max_length=2, unique=True)
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def flag(self):
+        return ''.join(
+            chr(ord(char) + 127397)
+            for char in self.code.upper()
+        )
+
+
 class Trip(models.Model):
     name = models.CharField(max_length=200)
-    destination = models.CharField(max_length=200)
+    city = models.CharField(max_length=200)
+    country = models.ForeignKey(
+        Country,
+        on_delete=models.PROTECT,
+        related_name='trips',
+    )
     start_date = models.DateField(default=date.today)
     end_date = models.DateField(default=date.today)
     description = models.TextField()
@@ -62,7 +82,8 @@ class TripForm(forms.ModelForm):
         model = Trip
         fields = [
             'name',
-            'destination',
+            'city',
+            'country',
             'start_date',
             'end_date',
             'description',
@@ -75,9 +96,14 @@ class TripForm(forms.ModelForm):
                     'class': 'form-control',
                 }
             ),
-            'destination': forms.TextInput(
+            'city': forms.TextInput(
                 attrs={
                     'class': 'form-control',
+                }
+            ),
+            'country': forms.Select(
+                attrs={
+                    'class': 'form-select',
                 }
             ),
             'start_date': forms.DateInput(
@@ -111,3 +137,9 @@ class TripForm(forms.ModelForm):
                 }
             ),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['country'].label_from_instance = (
+            lambda country: f'{country.flag} {country.name}'
+        )
