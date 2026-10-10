@@ -2,3 +2,4 @@ Django
 psycopg[binary]
 coverage
 python-decouple
+country_list
