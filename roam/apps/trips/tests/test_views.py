@@ -19,7 +19,7 @@ class TripIndexViewTests(TestCase):
         """
         response = self.client.get(reverse('trips:index'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Please add a trip !')
+        self.assertContains(response, 'Please add a new trip !')
 
     def test_at_least_one_trip(self):
         """

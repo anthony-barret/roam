@@ -14,6 +14,12 @@
 	<link rel="stylesheet" href="{% static 'trips/css/style.css' %}">
 </head>
 <body>
+<nav class="navbar bg-white border-bottom sticky-top mb-5">
+	<div class="container">
+		<a class="navbar-brand fw-bold" href="{% url 'trips:index' %}">✈️ ROAM</a>
+		<a class="btn btn-success ms-auto" href="{% url 'trips:create' %}">+ Add a new trip</a>
+	</div>
+</nav>
 <main>
 	{% block content %}{% endblock %}
 </main>
