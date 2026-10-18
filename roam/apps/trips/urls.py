@@ -10,4 +10,6 @@ urlpatterns = [
     path('<int:pk>/', views.TripDetailView.as_view(), name='detail'),
     path('<int:pk>/edit/', views.TripUpdateView.as_view(), name='update'),
     path('<int:pk>/delete/', views.TripDeleteView.as_view(), name='delete'),
+    path("map/", views.map_page, name="map"),
+    path("map/data/", views.map_data, name="map_data"),
 ]

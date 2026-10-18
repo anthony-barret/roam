@@ -1,3 +1,5 @@
+from django.http import JsonResponse
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 
@@ -49,3 +51,14 @@ class TripDeleteView(generic.DeleteView):
     template_name = 'trips/delete.html'
     context_object_name = 'trip'
     success_url = reverse_lazy('trips:index')
+
+
+def map_page(request):
+    return render(request, 'trips/map.html')
+
+
+def map_data(request):
+    codes = Trip.objects.values_list("country__code", flat=True).distinct()
+    return JsonResponse({
+        "visited_countries": list(codes)
+    })
