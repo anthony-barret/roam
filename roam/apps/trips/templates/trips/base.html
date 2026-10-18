@@ -11,12 +11,15 @@
 	        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
 	        crossorigin="anonymous"></script>
 	{% load static %}
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
 	<link rel="stylesheet" href="{% static 'trips/css/style.css' %}">
+	<meta name="referrer" content="strict-origin-when-cross-origin">
 </head>
 <body>
 <nav class="navbar bg-white border-bottom sticky-top mb-5">
 	<div class="container">
 		<a class="navbar-brand fw-bold" href="{% url 'trips:index' %}">✈️ ROAM</a>
+		<a class="btn btn-primary ms-auto" href="{% url 'trips:map' %}">Map</a>
 		<a class="btn btn-success ms-auto" href="{% url 'trips:create' %}">+ Add a new trip</a>
 	</div>
 </nav>
