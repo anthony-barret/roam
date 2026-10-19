@@ -352,3 +352,15 @@ class TripDeleteViewTests(TestCase):
         """
         response = self.client.post(reverse('trips:delete', kwargs={'pk': self.trip.pk}))
         self.assertRedirects(response, reverse('trips:index'))
+
+
+class TripMapViewTests(TestCase):
+    def test_map_uses_correct_template(self):
+        """
+        Map view uses the correct template.
+        """
+        response = self.client.get(reverse('trips:map'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'trips/map.html')
+
+
