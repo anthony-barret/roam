@@ -394,3 +394,27 @@ class TripMapDataViewTests(TestCase):
         response = self.client.get(reverse('trips:map_data'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '{"visited_countries": ["TL"]}')
+
+    def test_map_data_multiple_trips_to_same_country(self):
+        """
+        If there are multiple trips to the same country, visited_countries must contain only one country.
+        """
+        trip1 = Trip.objects.create(
+            name='Trip to Testland',
+            city='Test1',
+            country=self.country,
+            description='Trip to the city of tests',
+            rating=10,
+            status='completed',
+        )
+        trip2 = Trip.objects.create(
+            name='Trip to Testland',
+            city='Test2',
+            country=self.country,
+            description='Trip to the city of tests',
+            rating=9,
+            status='completed',
+        )
+        response = self.client.get(reverse('trips:map_data'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '{"visited_countries": ["TL"]}')
