@@ -365,6 +365,12 @@ class TripMapViewTests(TestCase):
 
 
 class TripMapDataViewTests(TestCase):
+    def setUp(self):
+        self.country = Country.objects.create(
+            name='Testland',
+            code='TL',
+        )
+
     def test_map_data_no_trip(self):
         """
         If there is no trip, visited_countries must be an empty list.
@@ -373,3 +379,18 @@ class TripMapDataViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '{"visited_countries": []}')
 
+    def test_map_data_one_trip(self):
+        """
+        If there is one trip, visited_countries must contain that trip.
+        """
+        trip = Trip.objects.create(
+            name='Trip to Testland',
+            city='Test',
+            country=self.country,
+            description='Trip to the city of tests',
+            rating=10,
+            status='completed',
+        )
+        response = self.client.get(reverse('trips:map_data'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '{"visited_countries": ["TL"]}')
