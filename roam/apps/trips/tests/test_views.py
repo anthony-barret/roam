@@ -364,3 +364,12 @@ class TripMapViewTests(TestCase):
         self.assertTemplateUsed(response, 'trips/map.html')
 
 
+class TripMapDataViewTests(TestCase):
+    def test_map_data_no_trip(self):
+        """
+        If there is no trip, visited_countries must be an empty list.
+        """
+        response = self.client.get(reverse('trips:map_data'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '{"visited_countries": []}')
+
